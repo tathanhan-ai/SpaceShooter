@@ -10,4 +10,8 @@ public class Bullet : MonoBehaviour
         newPosition.y += Flyspeed * Time.deltaTime; 
         transform.position = newPosition;   
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Destroy(gameObject);
+    }
 }
