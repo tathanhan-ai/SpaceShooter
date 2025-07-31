@@ -8,12 +8,14 @@ public class BallEnmey : MonoBehaviour
     void Update()
     {
         var newPosition = transform.position;
-        newPosition.y = Flyspeed * Time.deltaTime;
+        newPosition.y += Flyspeed * Time.deltaTime;
         transform.position = newPosition;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.CompareTag("Line") || collision.CompareTag("Player")) { 
         Destroy(gameObject);
+        }
     }
 }

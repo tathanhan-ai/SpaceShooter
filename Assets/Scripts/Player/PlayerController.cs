@@ -4,16 +4,16 @@ public class PlayerController : Auth, IDamageable
 {
     // ... các biến khác của Player
     public Bullet BulletPrefab;
-    // Bắt buộc phải cài đặt TakeDamage vì đã "hứa" với interface IDamageable
-    public void TakeDamage(float amount)
+    public HealthBar healthBar;
+
+    public void TakeDamage(float damage)
     {
         // Sử dụng thuộc tính CurrentHealth kế thừa từ lớp Auth
-        CurrentHealth -= amount;
-        if (CurrentHealth < 0)
+        CurrentHealth -= damage;
+        if (CurrentHealth <= 0)
         {
-            CurrentHealth = 0;
+            Die();
         }
-        Debug.Log($"Player health is now: {CurrentHealth}");
     }
 
     // Ghi đè lại hàm Move của lớp Auth để có logic di chuyển riêng
@@ -29,12 +29,26 @@ public class PlayerController : Auth, IDamageable
         Instantiate(BulletPrefab, transform.position, transform.rotation);
     }
 
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             Move();
             Fire();
+        }
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("BallEnemy"))
+        {
+            TakeDamage(1f);
+            healthBar.UpdateHealthBar(1f);
         }
     }
 }
