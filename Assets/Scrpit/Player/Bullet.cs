@@ -1,0 +1,13 @@
+using UnityEngine;
+
+public class Bullet : MonoBehaviour
+{
+    public float Flyspeed = 10f;
+    // Update is called once per frame
+    void Update()
+    {
+        var newPosition = transform.position;
+        newPosition.y += Flyspeed * Time.deltaTime; 
+        transform.position = newPosition;   
+    }
+}
