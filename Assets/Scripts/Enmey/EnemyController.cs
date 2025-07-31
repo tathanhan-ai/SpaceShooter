@@ -1,12 +1,19 @@
 using UnityEngine;
 
-public class EnmyController : Auth,IDamageable
+public class EnemyController : Auth,IDamageable
 {
     private float damage = 1;
+    public BallEnmey BallEnmeyPrefab;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         TakeDamage(damage);
     }
+
+    public override void Fire()
+    {
+        Instantiate(BallEnmeyPrefab, transform.position, transform.rotation);
+    }
+
     private void Die()
     {
         Destroy(gameObject);
@@ -19,5 +26,10 @@ public class EnmyController : Auth,IDamageable
         {
             Die();
         }
+    }
+
+    private void Update()
+    {
+        Fire();
     }
 }

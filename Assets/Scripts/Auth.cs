@@ -21,4 +21,9 @@ public class Auth : MonoBehaviour
     {
         // Logic bắn mặc định (nếu có)
     }
+
+    public virtual void Die()
+    {
+        // Logic bắn mặc định (nếu có)
+    }
 }
