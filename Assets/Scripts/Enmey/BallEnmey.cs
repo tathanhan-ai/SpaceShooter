@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BallEnmey : MonoBehaviour
 {
-    public float Flyspeed = -5f;
+    public float Flyspeed = -10f;
 
     // Update is called once per frame
     void Update()
@@ -12,8 +12,8 @@ public class BallEnmey : MonoBehaviour
         transform.position = newPosition;
     }
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    Destroy(gameObject);
-    //}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Destroy(gameObject);
+    }
 }
