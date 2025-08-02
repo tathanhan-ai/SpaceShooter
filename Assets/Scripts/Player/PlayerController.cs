@@ -29,7 +29,7 @@ public class PlayerController : Auth, IDamageable
         Instantiate(BulletPrefab, transform.position, transform.rotation);
     }
 
-    private void Die()
+    public void Die()
     {
         Destroy(gameObject);
     }

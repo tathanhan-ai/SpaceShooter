@@ -213,6 +213,9 @@ MonoBehaviour:
   BallEnmeyPrefab: {fileID: 2398343652045293488, guid: ce037f43746159742a4925c837c942e3,
     type: 3}
   healthBarForeground: {fileID: 1542075288398931085}
+  EnemyWave: {fileID: 7962291783225088735, guid: 3a8081a1bdcdba741a6a5aca597828b3,
+    type: 3}
+  FlySpeed: 5
 --- !u!1 &6963913011181492538
 GameObject:
   m_ObjectHideFlags: 0

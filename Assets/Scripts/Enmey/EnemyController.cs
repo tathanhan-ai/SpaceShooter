@@ -1,19 +1,21 @@
-﻿using UnityEngine;
+﻿using GluonGui.WorkspaceWindow.Views.WorkspaceExplorer;
+using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.SocialPlatforms.Impl;
 public class EnemyController : Auth,IDamageable
 {
     private float damage = 1;
-    private int score;
     public BallEnmey BallEnmeyPrefab;
     private float m_ballTime;
     public Transform healthBarForeground;
+    public EnemyWave EnemyWave;
+    public float FlySpeed;
     private Vector3 initialHealthBarScale;
+    private int _currentWaypointIndex = 0;
     Score m_scoreManager;
 
     private void Start()
     {
-        score = 0;
         m_ballTime = Random.Range(0f, 5f);
         if (healthBarForeground != null)
         {
@@ -29,6 +31,21 @@ public class EnemyController : Auth,IDamageable
         }
     }
 
+    public void Move()
+    {
+        float step = FlySpeed * Time.deltaTime;
+        Transform targetWaypoint = EnemyWave.FlyPath.Waypoints[_currentWaypointIndex].transform;
+        Debug.Log(targetWaypoint.position);
+        transform.position = Vector3.MoveTowards(transform.position, targetWaypoint.position, step);
+        if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
+        {
+            _currentWaypointIndex++;
+            if (_currentWaypointIndex >= EnemyWave.FlyPath.Waypoints.Length)
+            {
+                _currentWaypointIndex = 0;
+            }
+        }
+    }
     public override void Fire()
     {
         m_ballTime -= Time.deltaTime;
@@ -39,7 +56,7 @@ public class EnemyController : Auth,IDamageable
         }
     }
 
-    private void Die()
+    public void Die()
     {
         Destroy(gameObject);
     }
@@ -59,6 +76,7 @@ public class EnemyController : Auth,IDamageable
 
     private void Update()
     {
+        Move();
         Fire();
     }
 
