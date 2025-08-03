@@ -35,7 +35,6 @@ public class EnemyController : Auth,IDamageable
     {
         float step = FlySpeed * Time.deltaTime;
         Transform targetWaypoint = EnemyWave.FlyPath.Waypoints[_currentWaypointIndex].transform;
-        Debug.Log(targetWaypoint.position);
         transform.position = Vector3.MoveTowards(transform.position, targetWaypoint.position, step);
         if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
         {
