@@ -17,13 +17,14 @@ public class EnemyWave : MonoBehaviour
     {
         DelayTime -= Time.deltaTime;
         if (DelayTime <= 0) { 
-        m_InInitializationTime -= Time.deltaTime;
-        if(Quantity > 0 && m_InInitializationTime <= 0)
-        {
-            m_InInitializationTime = InitializationTime;
-            Instantiate(EnemyPrefab, FlyPath.Waypoints[0].transform.position, FlyPath.Waypoints[0].transform.rotation);
-            Quantity--;
-        }
+            m_InInitializationTime -= Time.deltaTime;
+            if(Quantity > 0 && m_InInitializationTime <= 0)
+            {
+                m_InInitializationTime = InitializationTime;
+                EnemyController newEnemy = Instantiate(EnemyPrefab, FlyPath.Waypoints[0].transform.position, Quaternion.identity);
+                newEnemy.Initialize(this.FlyPath);
+                Quantity--;
+            }
         }
     }
 }

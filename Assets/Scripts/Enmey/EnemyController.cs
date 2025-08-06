@@ -8,8 +8,9 @@ public class EnemyController : Auth,IDamageable
     public BallEnmey BallEnmeyPrefab;
     private float m_ballTime;
     public Transform healthBarForeground;
-    public EnemyWave EnemyWave;
+    private FlyPath _myFlyPath;
     public float FlySpeed;
+    public float rotationSpeed = 10f;
     private Vector3 initialHealthBarScale;
     private int _currentWaypointIndex = 0;
     Score m_scoreManager;
@@ -31,20 +32,42 @@ public class EnemyController : Auth,IDamageable
         }
     }
 
-    public void Move()
+    public void Initialize(FlyPath path)
     {
+        _myFlyPath = path;
+        _currentWaypointIndex = 0;
+    }
+
+    private void Move()
+    {
+        // Di chuyển dựa trên đường bay riêng _myFlyPath
+        if (_myFlyPath == null || _myFlyPath.Waypoints.Length == 0)
+        {
+            return;
+        }
+
+        Transform targetWaypoint = _myFlyPath.Waypoints[_currentWaypointIndex].transform;
+        Vector3 direction = targetWaypoint.position - transform.position;
+        if (direction != Vector3.zero) 
+        {
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90f;
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
         float step = FlySpeed * Time.deltaTime;
-        Transform targetWaypoint = EnemyWave.FlyPath.Waypoints[_currentWaypointIndex].transform;
         transform.position = Vector3.MoveTowards(transform.position, targetWaypoint.position, step);
+
         if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
         {
             _currentWaypointIndex++;
-            if (_currentWaypointIndex >= EnemyWave.FlyPath.Waypoints.Length)
+            if (_currentWaypointIndex >= _myFlyPath.Waypoints.Length)
             {
                 _currentWaypointIndex = 0;
             }
         }
     }
+
     public override void Fire()
     {
         m_ballTime -= Time.deltaTime;
