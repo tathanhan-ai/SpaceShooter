@@ -5,6 +5,9 @@ public class PlayerController : Auth, IDamageable
     // ... các biến khác của Player
     public Bullet BulletPrefab;
     public HealthBar healthBar;
+    private float _fireRate = 0.1f;
+    private float _fireLastTime;
+    
 
     public void TakeDamage(float damage)
     {
@@ -36,10 +39,13 @@ public class PlayerController : Auth, IDamageable
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Time.time > _fireLastTime + _fireRate) {
+            Fire();
+            _fireLastTime = Time.time;
+        } 
+        if (Input.GetMouseButton(0))
         {
             Move();
-            Fire();
         }
     }
 
